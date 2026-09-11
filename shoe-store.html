@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRIDEZ — Shoes for Everyone</title>
+<style>
+  :root{
+    --hotpink:#FF2E93;
+    --electric:#FFD400;
+    --teal:#00E0C6;
+    --violet:#6C2BFF;
+    --ink:#151221;
+    --paper:#FFF8EC;
+    --card:#FFFFFF;
+    --line:#151221;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Trebuchet MS', 'Segoe UI', Verdana, sans-serif;
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(255,46,147,0.14) 0, transparent 40%),
+      radial-gradient(circle at 92% 88%, rgba(0,224,198,0.16) 0, transparent 42%),
+      radial-gradient(circle at 85% 15%, rgba(108,43,255,0.12) 0, transparent 35%);
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;
+    background:var(--ink);
+    color:var(--paper);
+    position:sticky;top:0;z-index:50;
+    border-bottom:5px solid var(--electric);
+  }
+  .brand{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:1px;
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand .dot{
+    width:14px;height:14px;background:var(--hotpink);border-radius:50%;
+    box-shadow:0 0 0 4px var(--electric);
+  }
+  .brand span.hi{color:var(--electric);}
+  .cart-btn{
+    background:var(--hotpink);
+    color:white;
+    border:3px solid var(--ink);
+    border-radius:999px;
+    padding:10px 20px;
+    font-weight:800;
+    font-size:15px;
+    cursor:pointer;
+    display:flex;align-items:center;gap:8px;
+    transition:transform .15s ease;
+    box-shadow:4px 4px 0 var(--electric);
+  }
+  .cart-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--electric);}
+  .cart-count{
+    background:var(--ink);color:var(--electric);
+    border-radius:50%;
+    width:22px;height:22px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:12px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 28px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero h1{
+    font-size:clamp(38px,7vw,74px);
+    line-height:0.95;
+    margin:0 0 14px;
+    font-weight:900;
+    text-transform:none;
+  }
+  .hero h1 .wob{
+    display:inline-block;
+    background:var(--electric);
+    padding:2px 14px;
+    transform:rotate(-2deg);
+    border:4px solid var(--ink);
+    border-radius:14px;
+  }
+  .hero p{
+    font-size:19px;
+    max-width:640px;
+    margin:0 auto;
+    font-weight:600;
+    color:#3c3552;
+  }
+  .hero-shapes{position:absolute;inset:0;pointer-events:none;}
+  .blob{position:absolute;border-radius:50%;opacity:.5;filter:blur(2px);}
+  .blob1{width:140px;height:140px;background:var(--teal);top:10px;left:6%;}
+  .blob2{width:90px;height:90px;background:var(--hotpink);bottom:0;right:10%;}
+  .blob3{width:60px;height:60px;background:var(--violet);top:60px;right:22%;}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:24px;
+    max-width:1300px;
+    margin:0 auto;
+    padding:10px 28px 80px;
+    align-items:start;
+  }
+
+  /* ---------- FILTER PANEL ---------- */
+  .filters{
+    background:var(--card);
+    border:4px solid var(--ink);
+    border-radius:22px;
+    padding:22px;
+    position:sticky;
+    top:100px;
+    box-shadow:8px 8px 0 var(--violet);
+  }
+  .filters h3{
+    margin:0 0 16px;
+    font-size:22px;
+    font-weight:900;
+  }
+  .filter-group{
+    margin-bottom:22px;
+    padding-bottom:18px;
+    border-bottom:2px dashed #ddd4c2;
+  }
+  .filter-group:last-child{border-bottom:none;margin-bottom:0;}
+  .filter-group label.title{
+    display:block;
+    font-weight:800;
+    font-size:14px;
+    margin-bottom:10px;
+    color:var(--violet);
+  }
+  .search-box{
+    position:relative;
+    margin-bottom:6px;
+  }
+  .search-box input{
+    width:100%;
+    padding:12px 14px 12px 38px;
+    border-radius:999px;
+    border:3px solid var(--ink);
+    font-size:15px;
+    font-family:inherit;
+    outline:none;
+    background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="%23151221" stroke-width="3"><circle cx="7" cy="7" r="5.5"/><line x1="11" y1="11" x2="16.5" y2="16.5"/></svg>') no-repeat 12px center;
+  }
+  .search-box input:focus{border-color:var(--hotpink);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    border:2.5px solid var(--ink);
+    background:#fff;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    user-select:none;
+    transition:all .12s ease;
+  }
+  .chip:hover{transform:translateY(-2px);}
+  .chip.active{
+    background:var(--electric);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .chip.active.pink{background:var(--hotpink);color:#fff;}
+  .chip.active.teal{background:var(--teal);}
+  .price-out{
+    font-weight:800;
+    color:var(--hotpink);
+    font-size:15px;
+    margin-bottom:6px;
+    display:block;
+  }
+  input[type=range]{
+    width:100%;
+    accent-color:var(--hotpink);
+  }
+  .clear-btn{
+    width:100%;
+    margin-top:6px;
+    padding:10px;
+    border-radius:12px;
+    border:3px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    font-weight:800;
+    cursor:pointer;
+  }
+  .clear-btn:hover{background:var(--violet);}
+
+  /* ---------- PRODUCTS ---------- */
+  .results-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:16px;flex-wrap:wrap;gap:8px;
+  }
+  .results-bar h2{font-size:20px;margin:0;font-weight:800;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--card);
+    border:4px solid var(--ink);
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  .card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--hotpink);}
+  .card .imgwrap{
+    aspect-ratio:1/1;
+    overflow:hidden;
+    background:#eee7d5;
+    border-bottom:4px solid var(--ink);
+    position:relative;
+  }
+  .card .imgwrap img{width:100%;height:100%;object-fit:cover;}
+  .tag{
+    position:absolute;top:10px;left:10px;
+    background:var(--teal);
+    border:2px solid var(--ink);
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+    text-transform:capitalize;
+  }
+  .card .body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card .brand-name{font-size:12px;font-weight:800;color:var(--violet);text-transform:uppercase;letter-spacing:.5px;}
+  .card h4{margin:0;font-size:16px;font-weight:800;line-height:1.25;}
+  .meta-row{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 4px;}
+  .meta-pill{
+    font-size:11px;font-weight:700;
+    background:#f2ecd9;border:1.5px solid var(--ink);
+    padding:2px 8px;border-radius:999px;
+  }
+  .price-row{
+    margin-top:auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:8px;
+  }
+  .price{font-size:20px;font-weight:900;color:var(--ink);}
+  .btn-group{display:flex;gap:8px;padding:0 14px 14px;}
+  .btn{
+    flex:1;
+    padding:10px 8px;
+    border-radius:12px;
+    border:3px solid var(--ink);
+    font-weight:800;
+    font-size:13px;
+    cursor:pointer;
+    text-align:center;
+  }
+  .btn-add{background:#fff;}
+  .btn-add:hover{background:var(--electric);}
+  .btn-buy{background:var(--hotpink);color:#fff;}
+  .btn-buy:hover{background:var(--violet);}
+  .no-results{
+    grid-column:1/-1;
+    text-align:center;
+    padding:60px 20px;
+    font-size:18px;
+    font-weight:700;
+    color:#77708c;
+  }
+
+  /* ---------- MODALS ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(21,18,33,0.55);
+    display:none;align-items:center;justify-content:center;
+    z-index:200;padding:16px;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--paper);
+    border:4px solid var(--ink);
+    border-radius:22px;
+    max-width:480px;width:100%;
+    max-height:88vh;overflow-y:auto;
+    padding:26px;
+    position:relative;
+    box-shadow:10px 10px 0 var(--electric);
+  }
+  .modal h3{margin-top:0;font-size:24px;font-weight:900;}
+  .close-x{
+    position:absolute;top:16px;right:18px;
+    background:none;border:none;font-size:22px;cursor:pointer;font-weight:900;
+  }
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-weight:800;font-size:13px;margin-bottom:5px;}
+  .field input,.field textarea{
+    width:100%;padding:11px 12px;border-radius:10px;border:2.5px solid var(--ink);
+    font-family:inherit;font-size:14px;outline:none;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--hotpink);}
+  .modal-submit{
+    width:100%;padding:13px;margin-top:6px;
+    background:var(--teal);border:3px solid var(--ink);border-radius:14px;
+    font-weight:900;font-size:15px;cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .modal-submit:hover{background:var(--electric);}
+  .buy-summary{
+    background:#fff;border:2.5px dashed var(--ink);border-radius:14px;
+    padding:12px 14px;margin-bottom:16px;font-size:14px;
+  }
+  .cart-item{
+    display:flex;gap:12px;align-items:center;
+    border-bottom:2px dashed #ddd4c2;padding:10px 0;
+  }
+  .cart-item img{width:56px;height:56px;object-fit:cover;border-radius:10px;border:2px solid var(--ink);}
+  .cart-item .info{flex:1;}
+  .cart-item .info h5{margin:0;font-size:14px;font-weight:800;}
+  .cart-item .info small{color:#77708c;}
+  .qty-ctrl{display:flex;align-items:center;gap:8px;}
+  .qty-ctrl button{
+    width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);
+    background:#fff;font-weight:900;cursor:pointer;
+  }
+  .remove-x{background:none;border:none;color:var(--hotpink);font-weight:800;cursor:pointer;font-size:13px;}
+  .cart-total{
+    display:flex;justify-content:space-between;font-size:18px;font-weight:900;
+    padding-top:14px;margin-top:10px;border-top:3px solid var(--ink);
+  }
+  .empty-cart{text-align:center;padding:30px 10px;font-weight:700;color:#77708c;}
+
+  footer{
+    text-align:center;padding:30px;font-size:13px;font-weight:700;color:#77708c;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:880px){
+    .wrap{grid-template-columns:1fr;}
+    .filters{
+      position:static;
+      order:2;
+    }
+    .filters.open{display:block;}
+    .grid{order:1;}
+  }
+  .mobile-filter-toggle{
+    display:none;
+    width:100%;
+    padding:12px;
+    background:var(--violet);
+    color:#fff;
+    border:3px solid var(--ink);
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+    margin-bottom:16px;
+  }
+  @media (max-width:880px){
+    .mobile-filter-toggle{display:block;}
+    .filters{display:none;}
+    .filters.open{display:block;margin-bottom:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#" class="brand"><span class="dot"></span>STRID<span class="hi">EZ</span></a>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</div>
+
+<div class="hero">
+  <div class="hero-shapes">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <h1>Shoes for <span class="wob">every</span><br>step you take</h1>
+  <p>Sneakers, sports, running, boots & more — for kids, teens, and grown-ups. Find your perfect fit below.</p>
+</div>
+
+<div class="wrap">
+
+  <button class="mobile-filter-toggle" onclick="toggleFilters()">🎛️ Show Filters</button>
+
+  <aside class="filters" id="filterPanel">
+    <h3>🎯 Filter It Up</h3>
+
+    <div class="filter-group">
+      <label class="title">Search</label>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search shoes, brands...">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="title">Gender</label>
+      <div class="chip-row" id="genderChips">
+        <div class="chip active pink" data-value="all">All</div>
+        <div class="chip" data-value="male">Male</div>
+        <div class="chip" data-value="female">Female</div>
+        <div class="chip" data-value="unisex">Unisex</div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="title">Age Group</label>
+      <div class="chip-row" id="ageChips">
+        <div class="chip active teal" data-value="all">All Ages</div>
+        <div class="chip" data-value="1-10">1–10</div>
+        <div class="chip" data-value="10-20">10–20</div>
+        <div class="chip" data-value="20-30">20–30</div>
+        <div class="chip" data-value="30-40">30–40</div>
+        <div class="chip" data-value="40+">40+</div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="title">Type</label>
+      <div class="chip-row" id="typeChips">
+        <div class="chip active" data-value="all">All Types</div>
+        <div class="chip" data-value="sneakers">Sneakers</div>
+        <div class="chip" data-value="sports">Sports</div>
+        <div class="chip" data-value="running">Running</div>
+        <div class="chip" data-value="boots">Boots</div>
+        <div class="chip" data-value="casual">Casual</div>
+        <div class="chip" data-value="formal">Formal</div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="title">Price Range</label>
+      <span class="price-out" id="priceOut">Up to ₹10,000</span>
+      <input type="range" id="priceSlider" min="500" max="10000" step="100" value="10000">
+    </div>
+
+    <button class="clear-btn" onclick="clearFilters()">✨ Reset Filters</button>
+  </aside>
+
+  <main>
+    <div class="results-bar">
+      <h2 id="resultCount">Loading shoes...</h2>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </main>
+
+</div>
+
+<footer>Made with 💥 by STRIDEZ • Prices are illustrative • Orders confirmed via WhatsApp</footer>
+
+<!-- CART MODAL -->
+<div class="overlay" id="cartOverlay">
+  <div class="modal">
+    <button class="close-x" onclick="closeOverlay('cartOverlay')">✕</button>
+    <h3>🛒 Your Cart</h3>
+    <div id="cartItemsWrap"></div>
+  </div>
+</div>
+
+<!-- BUY NOW MODAL (single item) -->
+<div class="overlay" id="buyOverlay">
+  <div class="modal">
+    <button class="close-x" onclick="closeOverlay('buyOverlay')">✕</button>
+    <h3>📦 Confirm Your Order</h3>
+    <div class="buy-summary" id="buySummary"></div>
+    <form id="buyForm" onsubmit="return submitBuyForm(event)">
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="buyName" required>
+      </div>
+      <div class="field">
+        <label>Phone Number *</label>
+        <input type="tel" id="buyPhone" required>
+      </div>
+      <div class="field">
+        <label>Delivery Address *</label>
+        <textarea id="buyAddress" rows="3" required></textarea>
+      </div>
+      <div class="field">
+        <label>Shoe Size (optional)</label>
+        <input type="text" id="buySize" placeholder="e.g. UK 8">
+      </div>
+      <button type="submit" class="modal-submit">Send Order on WhatsApp ✅</button>
+    </form>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL (whole cart) -->
+<div class="overlay" id="checkoutOverlay">
+  <div class="modal">
+    <button class="close-x" onclick="closeOverlay('checkoutOverlay')">✕</button>
+    <h3>✅ Checkout</h3>
+    <div class="buy-summary" id="checkoutSummary"></div>
+    <form id="checkoutForm" onsubmit="return submitCheckoutForm(event)">
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="coName" required>
+      </div>
+      <div class="field">
+        <label>Phone Number *</label>
+        <input type="tel" id="coPhone" required>
+      </div>
+      <div class="field">
+        <label>Delivery Address *</label>
+        <textarea id="coAddress" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="modal-submit">Send Order on WhatsApp ✅</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ================= PRODUCT DATA ================= */
+const IMG = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=500&q=70`;
+
+const PRODUCTS = [
+  {id:1,name:"Blaze Runner X1",brand:"Voltix",type:"running",gender:"unisex",age:"20-30",price:3499,img:IMG("photo-1542291026-7eec264c27ff")},
+  {id:2,name:"CloudStep Pro",brand:"Aeroform",type:"sneakers",gender:"male",age:"20-30",price:2799,img:IMG("photo-1595950653106-6c9ebd614d3a")},
+  {id:3,name:"Velvet Trail Boot",brand:"Northmark",type:"boots",gender:"female",age:"30-40",price:5299,img:IMG("photo-1608231387042-66d1773070a5")},
+  {id:4,name:"Skyline Court",brand:"Voltix",type:"sneakers",gender:"female",age:"20-30",price:3199,img:IMG("photo-1543163521-1bf539c55dd2")},
+  {id:5,name:"Rugged Ridge Boot",brand:"Northmark",type:"boots",gender:"male",age:"30-40",price:4899,img:IMG("photo-1606107557195-0e29a4b5b4aa")},
+  {id:6,name:"SprintFlex Junior",brand:"KidStep",type:"sports",gender:"unisex",age:"1-10",price:1499,img:IMG("photo-1560769629-975ec94e6a86")},
+  {id:7,name:"Classic Oxford",brand:"Heritage & Co",type:"formal",gender:"male",age:"30-40",price:3999,img:IMG("photo-1549298916-b41d501d3772")},
+  {id:8,name:"Everyday Canvas",brand:"UrbanRoot",type:"casual",gender:"unisex",age:"10-20",price:1899,img:IMG("photo-1520256862855-398228c41684")},
+  {id:9,name:"Marathon Elite",brand:"Voltix",type:"running",gender:"male",age:"20-30",price:4599,img:IMG("photo-1465453869711-7e174808ace9")},
+  {id:10,name:"PetalStep Flats",brand:"Aeroform",type:"casual",gender:"female",age:"20-30",price:2199,img:IMG("photo-1491553895911-0055eca6402d")},
+  {id:11,name:"Court Legends",brand:"Voltix",type:"sports",gender:"male",age:"10-20",price:2999,img:IMG("photo-1519741497674-611481863552")},
+  {id:12,name:"Golden Hour Heels",brand:"Heritage & Co",type:"formal",gender:"female",age:"30-40",price:3699,img:IMG("photo-1525966222134-fcfa99b8ae77")},
+  {id:13,name:"Tiny Trekker",brand:"KidStep",type:"boots",gender:"unisex",age:"1-10",price:1699,img:IMG("photo-1600185365483-26d7a4cc7519")},
+  {id:14,name:"Retro Bounce",brand:"UrbanRoot",type:"sneakers",gender:"unisex",age:"10-20",price:2599,img:IMG("photo-1460353581641-37baddab0fa2")},
+  {id:15,name:"Trailblazer 40+",brand:"Northmark",type:"running",gender:"male",age:"40+",price:4299,img:IMG("photo-1595341888016-a392ef81b7de")},
+  {id:16,name:"Comfort Walk Senior",brand:"Heritage & Co",type:"casual",gender:"female",age:"40+",price:2899,img:IMG("photo-1483985988355-763728e1935b")},
+  {id:17,name:"PowerSprint Kids",brand:"KidStep",type:"running",gender:"unisex",age:"1-10",price:1399,img:IMG("photo-1514989940723-e8e51635b782")},
+  {id:18,name:"Street Flex Hi-Top",brand:"UrbanRoot",type:"sneakers",gender:"male",age:"10-20",price:3099,img:IMG("photo-1600269452121-4f2416e55c28")},
+];
+
+/* ================= STATE ================= */
+let cart = [];
+let filters = { search:"", gender:"all", age:"all", type:"all", maxPrice:10000 };
+
+/* ================= RENDER PRODUCTS ================= */
+function ageOverlaps(productAge, filterAge){
+  return productAge === filterAge;
+}
+
+function applyFilters(){
+  const term = filters.search.trim().toLowerCase();
+  const filtered = PRODUCTS.filter(p=>{
+    if(filters.gender!=="all" && p.gender!==filters.gender) return false;
+    if(filters.age!=="all" && !ageOverlaps(p.age, filters.age)) return false;
+    if(filters.type!=="all" && p.type!==filters.type) return false;
+    if(p.price > filters.maxPrice) return false;
+    if(term && !(p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term) || p.type.toLowerCase().includes(term))) return false;
+    return true;
+  });
+  renderGrid(filtered);
+}
+
+function renderGrid(list){
+  const grid = document.getElementById("productGrid");
+  const count = document.getElementById("resultCount");
+  count.textContent = list.length ? `${list.length} shoe${list.length>1?"s":""} found` : "No shoes found";
+  if(list.length===0){
+    grid.innerHTML = `<div class="no-results">😕 No shoes match your filters.<br>Try widening your search or hit Reset Filters.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p=>`
+    <div class="card">
+      <div class="imgwrap">
+        <span class="tag">${p.type}</span>
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=500&q=70'">
+      </div>
+      <div class="body">
+        <div class="brand-name">${p.brand}</div>
+        <h4>${p.name}</h4>
+        <div class="meta-row">
+          <span class="meta-pill">${p.gender}</span>
+          <span class="meta-pill">Age ${p.age}</span>
+        </div>
+        <div class="price-row"><span class="price">₹${p.price.toLocaleString('en-IN')}</span></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-add" onclick="addToCart(${p.id})">+ Add</button>
+        <button class="btn btn-buy" onclick="openBuyModal(${p.id})">Buy Now</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ================= FILTER UI WIRING ================= */
+function wireChipGroup(containerId, filterKey){
+  const container = document.getElementById(containerId);
+  container.querySelectorAll(".chip").forEach(chip=>{
+    chip.addEventListener("click", ()=>{
+      container.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+      chip.classList.add("active");
+      filters[filterKey] = chip.dataset.value;
+      applyFilters();
+    });
+  });
+}
+wireChipGroup("genderChips","gender");
+wireChipGroup("ageChips","age");
+wireChipGroup("typeChips","type");
+
+document.getElementById("searchInput").addEventListener("input", (e)=>{
+  filters.search = e.target.value;
+  applyFilters();
+});
+
+const priceSlider = document.getElementById("priceSlider");
+const priceOut = document.getElementById("priceOut");
+priceSlider.addEventListener("input", (e)=>{
+  filters.maxPrice = parseInt(e.target.value,10);
+  priceOut.textContent = `Up to ₹${filters.maxPrice.toLocaleString('en-IN')}`;
+  applyFilters();
+});
+
+function clearFilters(){
+  filters = { search:"", gender:"all", age:"all", type:"all", maxPrice:10000 };
+  document.getElementById("searchInput").value = "";
+  priceSlider.value = 10000;
+  priceOut.textContent = "Up to ₹10,000";
+  document.querySelectorAll(".chip-row").forEach(row=>{
+    row.querySelectorAll(".chip").forEach((c,i)=>c.classList.toggle("active", i===0));
+  });
+  applyFilters();
+}
+
+function toggleFilters(){
+  document.getElementById("filterPanel").classList.toggle("open");
+}
+
+/* ================= CART ================= */
+function addToCart(id){
+  const product = PRODUCTS.find(p=>p.id===id);
+  const existing = cart.find(c=>c.id===id);
+  if(existing){ existing.qty += 1; } else { cart.push({...product, qty:1}); }
+  updateCartCount();
+  flashCartButton();
+}
+
+function updateCartCount(){
+  const totalQty = cart.reduce((sum,c)=>sum+c.qty,0);
+  document.getElementById("cartCount").textContent = totalQty;
+}
+
+function flashCartButton(){
+  const btn = document.querySelector(".cart-btn");
+  btn.style.transform = "scale(1.12)";
+  setTimeout(()=>btn.style.transform="",150);
+}
+
+function changeQty(id, delta){
+  const item = cart.find(c=>c.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty<=0){ cart = cart.filter(c=>c.id!==id); }
+  updateCartCount();
+  renderCart();
+}
+
+function removeFromCart(id){
+  cart = cart.filter(c=>c.id!==id);
+  updateCartCount();
+  renderCart();
+}
+
+function cartTotal(){
+  return cart.reduce((sum,c)=>sum + c.price*c.qty, 0);
+}
+
+function renderCart(){
+  const wrap = document.getElementById("cartItemsWrap");
+  if(cart.length===0){
+    wrap.innerHTML = `<div class="empty-cart">Your cart is empty. Go add some fresh kicks! 👟</div>`;
+    return;
+  }
+  wrap.innerHTML = cart.map(c=>`
+    <div class="cart-item">
+      <img src="${c.img}" alt="${c.name}">
+      <div class="info">
+        <h5>${c.name}</h5>
+        <small>₹${c.price.toLocaleString('en-IN')} × ${c.qty}</small>
+      </div>
+      <div class="qty-ctrl">
+        <button onclick="changeQty(${c.id},-1)">−</button>
+        <span>${c.qty}</span>
+        <button onclick="changeQty(${c.id},1)">+</button>
+      </div>
+      <button class="remove-x" onclick="removeFromCart(${c.id})">✕</button>
+    </div>
+  `).join("") + `
+    <div class="cart-total"><span>Total</span><span>₹${cartTotal().toLocaleString('en-IN')}</span></div>
+    <button class="modal-submit" style="margin-top:16px;" onclick="openCheckout()">Proceed to Checkout →</button>
+  `;
+}
+
+function openCart(){
+  renderCart();
+  document.getElementById("cartOverlay").classList.add("show");
+}
+
+function closeOverlay(id){
+  document.getElementById(id).classList.remove("show");
+}
+
+/* ================= BUY NOW (single item) ================= */
+let activeBuyProduct = null;
+
+function openBuyModal(id){
+  activeBuyProduct = PRODUCTS.find(p=>p.id===id);
+  document.getElementById("buySummary").innerHTML = `
+    <strong>${activeBuyProduct.name}</strong> (${activeBuyProduct.brand})<br>
+    Type: ${activeBuyProduct.type} • Gender: ${activeBuyProduct.gender} • Age: ${activeBuyProduct.age}<br>
+    Price: ₹${activeBuyProduct.price.toLocaleString('en-IN')}
+  `;
+  document.getElementById("buyForm").reset();
+  document.getElementById("buyOverlay").classList.add("show");
+}
+
+const WHATSAPP_NUMBER = "917425932172"; // assumed +91 India code — update if different
+
+function submitBuyForm(e){
+  e.preventDefault();
+  const name = document.getElementById("buyName").value.trim();
+  const phone = document.getElementById("buyPhone").value.trim();
+  const address = document.getElementById("buyAddress").value.trim();
+  const size = document.getElementById("buySize").value.trim();
+
+  const msg =
+`🛍️ *New Order — STRIDEZ*
+
+*Customer Details*
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+${size ? "Shoe Size: "+size : ""}
+
+*Item*
+${activeBuyProduct.name} (${activeBuyProduct.brand})
+Type: ${activeBuyProduct.type} | Gender: ${activeBuyProduct.gender} | Age Group: ${activeBuyProduct.age}
+Price: ₹${activeBuyProduct.price.toLocaleString('en-IN')}
+
+Please confirm my order. Thank you!`;
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, "_blank");
+  closeOverlay("buyOverlay");
+  return false;
+}
+
+/* ================= CHECKOUT (whole cart) ================= */
+function openCheckout(){
+  if(cart.length===0) return;
+  document.getElementById("checkoutSummary").innerHTML =
+    cart.map(c=>`${c.name} × ${c.qty} — ₹${(c.price*c.qty).toLocaleString('en-IN')}`).join("<br>") +
+    `<br><strong>Total: ₹${cartTotal().toLocaleString('en-IN')}</strong>`;
+  document.getElementById("checkoutForm").reset();
+  closeOverlay("cartOverlay");
+  document.getElementById("checkoutOverlay").classList.add("show");
+}
+
+function submitCheckoutForm(e){
+  e.preventDefault();
+  const name = document.getElementById("coName").value.trim();
+  const phone = document.getElementById("coPhone").value.trim();
+  const address = document.getElementById("coAddress").value.trim();
+
+  const itemLines = cart.map(c=>
+    `- ${c.name} (${c.brand}) | ${c.type}, ${c.gender}, Age ${c.age} | Qty: ${c.qty} | ₹${(c.price*c.qty).toLocaleString('en-IN')}`
+  ).join("\n");
+
+  const msg =
+`🛍️ *New Order — STRIDEZ*
+
+*Customer Details*
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+
+*Items*
+${itemLines}
+
+*Total: ₹${cartTotal().toLocaleString('en-IN')}*
+
+Please confirm my order. Thank you!`;
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, "_blank");
+  closeOverlay("checkoutOverlay");
+  cart = [];
+  updateCartCount();
+  return false;
+}
+
+/* close overlay on outside click */
+document.querySelectorAll(".overlay").forEach(ov=>{
+  ov.addEventListener("click",(e)=>{ if(e.target===ov) ov.classList.remove("show"); });
+});
+
+/* ================= INIT ================= */
+applyFilters();
+</script>
+
+</body>
+</html>
